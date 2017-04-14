@@ -3,12 +3,15 @@
 集成 DMHub SDK 之前，您首先需要到 DM Hub 平台创建应用。
 #### 1.1 进入应用设置页面
 点击 DM Hub 平台首页右上角的齿轮图标，选择 `开放与集成` 选项，进入应用设置页面。
+
 ![left | 0x0](../assets/guide01.png)
 #### 1.2 新建应用
 在应用设置页面点击右上角的 `+ 新建` 按钮，在弹出的创建应用弹出框中填写应用名称和描述后保存。
+
 ![left | 0x0](../assets/guide02.png)
 #### 1.3 更新权限设置
 创建应用成功之后，即可获得集成 SDK 所需的 appid 和 secret 信息。根据开发需求进行权限设置后，点击右下角的 `更新` 按钮（注：即使没有更改权限设置，也要进行更新），完成应用创建。
+
 ![left | 0x0](../assets/guide03.png)
 ### 2. 导入 SDK
 DMHub Android SDK 要求 Android API >= 15。
@@ -18,7 +21,7 @@ DMHub Android SDK 要求 Android API >= 15。
 打开工程主 module 的 build.gradle 配置文件，添加配置：
 ```gradle
 android {
-	......
+    ......
 }
 
 repositories {
@@ -28,8 +31,8 @@ repositories {
 }
 
 dependencies {
-	......
-	compile(name: 'dmhubsdk-android-0.1.0', ext: 'aar')
+    ......
+    compile(name: 'dmhubsdk-android-0.1.0', ext: 'aar')
     compile 'com.squareup.okhttp3:okhttp:3.0.1'
     ......
 }
@@ -75,10 +78,10 @@ public class DMHubApp extends Application{
  * @param source       显示在 DM Hub 客户时间轴上的客户来源，建议使用 App 名称
  */
 DMHubSDK.sharedInstance().createUnknownCustomerWithJPushIdentity(
-		dmHubAppName,
-		jPushAppKey,
-		jPushId,
-		source
+	dmHubAppName,
+	jPushAppKey,
+	jPushId,
+	source
 );
 ```
 上面的方法默认使用 `unknown` 作为未知客户的初始用户名，您也可以在创建未知客户时指定初始用户名：
@@ -87,11 +90,11 @@ DMHubSDK.sharedInstance().createUnknownCustomerWithJPushIdentity(
  * @param unknownName 创建未知客户时指定的初始用户名
  */
 DMHubSDK.sharedInstance().createUnknownCustomerWithJPushIdentity(
-		unknownName,
-		dmHubAppName,
-		jPushAppKey,
-		jPushId,
-		source
+	unknownName,
+	dmHubAppName,
+	jPushAppKey,
+	jPushId,
+	source
 );
 ```
 如果想要在创建未知客户时指定其他初始信息，或者您已具有用户信息，则可以通过下面的方法创建客户：
@@ -141,18 +144,18 @@ DMHubSDK.sharedInstance().exitApp(appName, targetId);
 - 跟踪客户进入页面事件
 ```java
 /**
- * 页面可以是 Activity、Fragment...
  * @param viewName 页面的名称，可以使用类名或自定义名称，会在客户时间轴上显示
  * @param viewId   页面的 id，可以使用 HashCode
+ * 注：页面可以是 Activity、Fragment...
  */
 DMHubSDK.sharedInstance().openView(viewName, viewId);
 ```
 - 跟踪客户离开页面事件
 ```java
 /**
- * 页面可以是 Activity、Fragment...
  * @param viewName 页面的名称，可以使用类名或自定义名称，会在客户时间轴上显示
  * @param viewId   页面的 id，可以使用 HashCode
+ * 注：页面可以是 Activity、Fragment...
  */
 DMHubSDK.sharedInstance().exitView(viewName, viewId);
 ```
@@ -188,3 +191,4 @@ DMHubSDK.sharedInstance().track(eventName);
 ### 6. 技术支持
 - 在线客服：在 DM Hub 平台右下角进行客服咨询
 - 电子邮件：<support@convertlab.com>
+
