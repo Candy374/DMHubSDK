@@ -1,23 +1,23 @@
-## Android SDK 开发指南
-### 1. 创建应用
+# Android SDK 开发指南
+## 1. 创建应用
 集成 DMHub SDK 之前，您首先需要到 DM Hub 平台创建应用。
-#### 1.1 进入应用设置页面
+### 1.1 进入应用设置页面
 点击 DM Hub 平台首页右上角的齿轮图标，选择 `开放与集成` 选项，进入应用设置页面。
 
 ![left | 0x0](../assets/guide01.png)
-#### 1.2 新建应用
+### 1.2 新建应用
 在应用设置页面点击右上角的 `+ 新建` 按钮，在弹出的创建应用弹出框中填写应用名称和描述后保存。
 
 ![left | 0x0](../assets/guide02.png)
-#### 1.3 更新权限设置
+### 1.3 更新权限设置
 创建应用成功之后，即可获得集成 SDK 所需的 appid 和 secret 信息。根据开发需求进行权限设置后，点击右下角的 `更新` 按钮（注：即使没有更改权限设置，也要进行更新），完成应用创建。
 
 ![left | 0x0](../assets/guide03.png)
-### 2. 导入 SDK
+## 2. 导入 SDK
 DMHub Android SDK 要求 Android API >= 15。
-#### 2.1 复制 aar 包
+### 2.1 复制 aar 包
 复制 libs 目录下的 dmhubsdk-android-0.1.0.aar 文件到工程主 module 的 libs 目录下。
-#### 2.2 修改 gradle 配置
+### 2.2 修改 gradle 配置
 打开工程主 module 的 build.gradle 配置文件，添加配置：
 ```gradle
 android {
@@ -37,7 +37,7 @@ dependencies {
     ......
 }
 ```
-#### 2.3 配置 AndroidManifest.xml
+### 2.3 配置 AndroidManifest.xml
 在 AndroidManifest.xml 中的 `<application></application>` 标签内配置 SDK 所需参数：
 ```xml
 <meta-data
@@ -53,7 +53,7 @@ dependencies {
 	android:name="DMHubServer"
 	android:value="http://api.convertwork.cn" />
 ```
-### 3. 初始化
+## 3. 初始化
 在自定义的 `Application` 中的 `onCreate` 方法中调用初始化方法：
 ```java
 public class DMHubApp extends Application{
@@ -68,7 +68,7 @@ public class DMHubApp extends Application{
 }
 ```
 注：在整个应用程序全局，只需要进行一次初始化。
-### 4. 创建客户和客户身份
+## 4. 创建客户和客户身份
 在客户首次打开应用时，以 `JPush Registration Id` 作为客户身份创建未知客户和客户身份：
 ```java
 /**
@@ -120,10 +120,10 @@ identities.add(identity);
 // 记录客户和客户 JPush 身份到 DM Hub 平台
 DMHubSDK.sharedInstance().customerAndIdentities(customer, identities);
 ```
-### 5. 跟踪客户事件
+## 5. 跟踪客户事件
 跟踪客户事件是 DMHubSDK 最核心的功能，开发人员可以根据实际需求，通过调用 SDK 提供的方法，非常方便的实现客户事件的跟踪，将客户在手机原生应用中产生的有价值行为，记录到 DM Hub 平台的客户时间轴上。
 而 DM Hub 平台则会以跟踪到的客户事件为数据基础，对海量客户进行智能筛选，与潜在客户进行互动，从而实现精准营销。
-#### 5.1 跟踪预置客户事件
+### 5.1 跟踪预置客户事件
 为了开发人员能够更方便的调用，DM Hub 平台预置了几种常见的客户事件。
 - 跟踪客户打开应用事件
 ```java
@@ -167,7 +167,7 @@ DMHubSDK.sharedInstance().exitView(viewName, viewId);
  */
 DMHubSDK.sharedInstance().clickNotification(notiTitle, notiId);
 ```
-#### 5.2 跟踪自定义客户事件
+### 5.2 跟踪自定义客户事件
 通过自定义客户事件，可以更灵活的对客户产生的事件进行跟踪。
 在 DM Hub 平台新建自定义事件后，可以通过下面的方法对自定义事件进行跟踪：
 ```java
@@ -188,7 +188,7 @@ DMHubSDK.sharedInstance().track(eventName, targetName, targetId, properties);
  */
 DMHubSDK.sharedInstance().track(eventName);
 ```
-### 6. 技术支持
+## 6. 技术支持
 - 在线客服：在 DM Hub 平台右下角进行客服咨询
 - 电子邮件：<support@convertlab.com>
 
