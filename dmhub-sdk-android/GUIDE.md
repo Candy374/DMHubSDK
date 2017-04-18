@@ -173,20 +173,13 @@ DMHubSDK.sharedInstance().clickNotification(notiTitle, notiId);
 ```java
 /**
  * @param eventName  与 DM Hub 中自定义的事件对应的事件 ID
- * @param targetName 客户产生该事件对应的目标(如按钮)的名称
- * @param targetId   客户产生该事件对应的目标(如按钮)的 Id
+ * @param targetName 对于自定义事件，客户时间轴上只会显示 targetName，相当于事件标题
+ * @param targetId   客户产生该事件对应的目标(如按钮)的 Id
  * @param properties 与该事件相关的其他信息
  * 注：1、properties 参数是一个 HashMap，键和值请使用可以转化为 JSON 的数据类型
  *    2、事件产生的时间信息 SDK 已进行处理，不需要在通过 properties 参数传递
  */
 DMHubSDK.sharedInstance().track(eventName, targetName, targetId, properties);
-```
-如果您对客户产生该事件对应的目标信息以及其他信息不感兴趣，则可以采用更简单的方法进行跟踪：
-```java
-/**
- * @param eventName  与 DM Hub 中自定义的事件对应的事件 ID
- */
-DMHubSDK.sharedInstance().track(eventName);
 ```
 ## 6. 技术支持
 - 在线客服：在 DM Hub 平台右下角进行客服咨询
