@@ -33,8 +33,8 @@ repositories {
 dependencies {
     ......
     compile(name: 'dmhubsdk-android-0.1.0', ext: 'aar')
-    compile 'com.squareup.okhttp3:okhttp:3.0.1'
-    ......
+    compile 'com.squareup.okhttp3:okhttp:3.x.x'   // 请根据开发需求设定 okhttp 的具体版本，如果已集成 retrofit2，则无需添加这句
+    ......
 }
 ```
 ### 2.3 配置 AndroidManifest.xml
