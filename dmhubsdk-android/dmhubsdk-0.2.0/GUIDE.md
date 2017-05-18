@@ -185,7 +185,7 @@ public class YourGeTuiIntentService extends GTIntentService {
 ```java
 /**
  * @param appName    应用名称，会在客户时间轴上显示
- * @param targetId   消息推送服务开放平台分配的 AppKey，如果既采用了极光推送又采用了个推推送，请选择 jPush AppKey
+ * @param targetId   消息推送服务开放平台分配的 AppKey，如果既采用了极光推送又采用了个推推送，请使用 jPush AppKey
  * @param appVersion 应用版本号
  * @param properties 事件的自定义属性
  */
@@ -198,7 +198,7 @@ DMHubSDK.sharedInstance().openApp(appName, targetId);
 ```java
 /**
  * @param appName    应用名称，会在客户时间轴上显示
- * @param targetId   消息推送服务开放平台分配的 AppKey，如果既采用了极光推送又采用了个推推送，请选择 jPush AppKey
+ * @param targetId   消息推送服务开放平台分配的 AppKey，如果既采用了极光推送又采用了个推推送，请使用 jPush AppKey
  * @param appVersion 应用版本号
  * @param properties 事件的自定义属性
  */
