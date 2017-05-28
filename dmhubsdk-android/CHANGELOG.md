@@ -20,7 +20,7 @@ _2017-05-18_
 - 对 SDK 开发文档进行了改进。
 
 ### 2. 开发须知
-- AndroidManifest.xml 文件的配置有新增内容，请根据开发文档 [3.3 配置 AndroidManifest.xml](https://github.com/xsio/DMHubSDK/blob/master/dmhubsdk-android/dmhubsdk-0.2.0/GUIDE.md#33-配置-androidmanifestxml) 进行调整。
+- AndroidManifest.xml 文件的配置有新增内容，请根据开发文档 [3.3 配置 AndroidManifest.xml](https://github.com/xsio/DMHubSDK/blob/master/dmhubsdk-android/GUIDE.md#33-配置-androidmanifestxml) 进行调整。
 
 
 ## Version 0.1.0
