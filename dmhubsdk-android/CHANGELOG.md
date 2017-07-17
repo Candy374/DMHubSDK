@@ -1,10 +1,35 @@
 # 更新日志
 
+## Version 0.3.0
+
+_2017-07-17_
+
+### 1. 更新说明
+
+新增：
+- 增加了判断推送通知是否来自 DM Hub 平台的接口。
+- 增加了用于处理极光推送通知相关事件的 `JPushReceiver` 组件。
+
+优化：
+- 采用的推送平台无需再显式配置。
+- 客户创建无需显式调用 API，交由 SDK 完成。
+- 打开 App 事件的记录无需显式调用 API，交由 SDK 完成。
+- 对于极光推送，注册 JPushReceiver 组件后，推送通知相关事件的记录完全交由 SDK 完成。
+
+废弃：
+- 废弃了创建客户的相关 API。
+- 废弃了记录 `打开手机应用` 预置事件的相关 API。
+- 废弃了 `退出手机应用` 预置事件及记录该事件的相关 API。
+- 废弃了 `退出手机视图` 预置事件及记录该事件的相关 API。
+
+### 2. 开发须知
+
+- SDK 所需组件和参数的配置有改动，请根据开发文档 [3.2.2 配置 SDK 所需组件和参数](https://github.com/xsio/DMHubSDK/blob/master/dmhubsdk-android/GUIDE.md#322-配置-sdk-所需组件和参数) 进行配置。
+- SDK 的 API 有较大幅度的简化，请根据开发文档 [5. API 使用介绍](https://github.com/xsio/DMHubSDK/blob/master/dmhubsdk-android/GUIDE.md#5-api-使用介绍) 进行修改和使用，SDK 针对不同的推送平台提供了不同的 API，使用时请注意。
+
 ## Version 0.2.1
 
 _2017-06-01_
-
-### 1. 更新说明
 
 新增：
 - 增加了采集客户设备 IMEI 信息的功能。
@@ -22,18 +47,10 @@ _2017-06-01_
 - 废弃了 `customerAndIdentities(DMHubCustomer customer, ArrayList<DMHubCustomerIdentity> identities)` 方法。
 - 带有 5 个参数的 `createUnknownCustomerWithJPushIdentity` 和 `createUnknownCustomerWithGeTuiIdentity` 两个创建客户的方法分别修改为 `createCustomerWithJPushIdentity` 和 `createCustomerWithGeTuiIdentity` 。
 
-### 2. 开发须知
-
-- 增加了采集客户设备 IMEI 信息的功能，请根据开发文档 [3.3.1 配置是否获取 IMEI 信息](https://github.com/xsio/DMHubSDK/blob/master/dmhubsdk-android/GUIDE.md#331-配置是否获取-imei-信息) 进行配置。
-- SDK 开发文档中对创建客户的方法进行了更详细的说明，为了避免使用过程中出现问题，请前往开发文档 [5. 创建初始客户和客户身份](https://github.com/xsio/DMHubSDK/blob/master/dmhubsdk-android/GUIDE.md#5-创建初始客户和客户身份) 阅读详细说明。
-- 如果曾在开发过程中使用了新版本 SDK 废弃的内容，请根据实际需求进行修改。
-
 
 ## Version 0.2.0
 
 _2017-05-18_
-
-### 1. 更新说明
 
 新增：
 - 增加了对个推推送的支持。
@@ -47,10 +64,6 @@ _2017-05-18_
 - Offline 场景下产生的事件会在 online 时进行补充记录。
 - 对 SDK 性能进行了优化，降低了对 App 性能的影响。
 - 对 SDK 开发文档进行了改进。
-
-### 2. 开发须知
-
-- AndroidManifest.xml 文件的配置有新增内容，请根据开发文档 [3.3 配置 AndroidManifest.xml](https://github.com/xsio/DMHubSDK/blob/master/dmhubsdk-android/GUIDE.md#33-配置-androidmanifestxml) 进行调整。
 
 
 ## Version 0.1.0
