@@ -1,10 +1,15 @@
 # 更新日志
 
+## Version 0.3.1
+
+_2017-09-01_
+
+性能优化。
+
+
 ## Version 0.3.0
 
 _2017-07-17_
-
-### 1. 更新说明
 
 新增：
 - 增加了判断推送通知是否来自 DM Hub 平台的接口。
@@ -22,10 +27,6 @@ _2017-07-17_
 - 废弃了 `退出手机应用` 预置事件及记录该事件的相关 API。
 - 废弃了 `退出手机视图` 预置事件及记录该事件的相关 API。
 
-### 2. 开发须知
-
-- SDK 所需组件和参数的配置有改动，请根据开发文档 [3.2.2 配置 SDK 所需组件和参数](https://github.com/xsio/DMHubSDK/blob/master/dmhubsdk-android/GUIDE.md#322-配置-sdk-所需组件和参数) 进行配置。
-- SDK 的 API 有较大幅度的简化，请根据开发文档 [5. API 使用介绍](https://github.com/xsio/DMHubSDK/blob/master/dmhubsdk-android/GUIDE.md#5-api-使用介绍) 进行修改和使用，SDK 针对不同的推送平台提供了不同的 API，使用时请注意。
 
 ## Version 0.2.1
 

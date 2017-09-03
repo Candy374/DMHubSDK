@@ -21,22 +21,26 @@
 
 - [4. 初始化](#4-初始化)
 
-- [5. API 使用介绍](#5-api-使用介绍)
-  - [5.1 跟踪客户事件 API](#51-跟踪客户事件-api)
-  - [5.2 使用极光推送相关 API](#52-使用极光推送相关-api)
-  - [5.3 使用个推推送相关 API](#53-使用个推推送相关-api)
+- [5. 创建客户和客户身份](#5-创建客户和客户身份)
 
-- [6. 混淆规则](#6-混淆规则)
+- [6. 跟踪客户事件](#6-跟踪客户事件)
+  - [6.1 跟踪进入视图事件](#61-跟踪进入视图事件)
+  - [6.2 跟踪推送通知相关事件](#62-跟踪推送通知相关事件)
+  - [6.3 跟踪客户自定义事件](#63-跟踪客户自定义事件)
 
-- [7. 技术支持](#7-技术支持)
+- [7. 其他 API](#7-其他-api)
+
+- [8. 混淆规则](#8-混淆规则)
+
+- [9. 技术支持](#9-技术支持)
 
 
 
 ## 1. 使用说明
 
 - 本文是 DMHub Android SDK 标准的开发指南文档，用以指导 SDK 的集成和使用，默认读者已经具备一定的 Android 开发能力。
-- 本篇指南匹配的 DMHub Android SDK 版本为： `v0.3.0` 。
-- DMHub Android SDK 0.3.0 要求  `Java >= 1.7`  &  `Android API >= 9` 。
+- 本篇指南匹配的 DMHub Android SDK 版本为： `v0.3.1` 。
+- DMHub Android SDK 0.3.1 要求  `Java >= 1.7`  &  `Android API >= 9` 。
 
 ## 2. 开发准备
 
@@ -71,7 +75,7 @@
 
 ### 3.1 添加 jar 包
 
-复制 libs 目录下的 [dmhubsdk-android-0.3.0.jar](libs/dmhubsdk-android-0.3.0.jar) 文件到工程主 module 的 libs 目录下，右键 jar 包，选择 `Add As Library...` ，将 jar 作为 Library 添加到主 module 中。
+复制 libs 目录下的 [dmhubsdk-android-0.3.1.jar](libs/dmhubsdk-android-0.3.1.jar) 文件到工程主 module 的 libs 目录下，右键 jar 包，选择 `Add As Library...` ，将 jar 作为 Library 添加到主 module 中。
 
 ### 3.2 配置 AndroidManifest.xml
 
@@ -159,13 +163,35 @@ public class DMHubApp extends Application {
 
 注：在整个应用程序全局，只需要进行一次初始化。
 
-## 5. API 使用介绍
+## 5. 创建客户和客户身份
 
-### 5.1 跟踪客户事件 API
+为了跟踪客户事件，需要先创建客户和客户身份。
 
-**1. trackOpenView**
+如果您使用了极光推送，需要配置 `JPushReceiver` 组件，正确配置后，SDK 内部会完成创建客户的操作。
 
-跟踪进入视图事件。
+如果您使用了个推推送，则需要调用下面的 API 进行创建客户：
+
+- 接口定义
+
+```java
+public void fetchGeTuiClientId(@NonNull String clientId);
+```
+
+- 代码示例
+
+```java
+public class YourIntentService extends GTIntentService {
+
+    @Override
+    public void onReceiveClientId(Context context, String clientid) {
+        DMHubSDK.sharedInstance().fetchGeTuiClientId(clientid);
+    }
+}
+```
+
+## 6. 跟踪客户事件
+
+### 6.1 跟踪进入视图事件
 
 - 接口定义
 
@@ -190,107 +216,11 @@ public class YourActivity extends Activity {
 }
 ```
 
-**2. track**
+### 6.2 跟踪推送通知相关事件
 
-跟踪客户自定义事件。
+如果您使用了极光推送，需要配置 `JPushReceiver` 组件，正确配置后，SDK 内部会完成推送通知相关事件的记录。
 
-注：该接口调用之前需要先根据业务需求在 DM Hub 后台新建自定义事件，在新建自定义事件时，还可以根据需要添加自定义属性。
-
-- 接口定义
-
-```java
-/**
- * @param eventId    与 DM Hub 中新建的自定义事件对应的事件 Id
- * @param targetName 对于自定义事件，客户时间轴上只会显示 targetName，相当于事件标题
- * @param targetId   客户触发该事件对应的目标(如按钮)的 Id
- * @param properties 事件的自定义属性，必须以在 DM Hub 中新建自定义事件时添加的自定义属性作为 key
- */
-public void track(@NonNull String eventId, @NonNull String targetName, String targetId, Properties properties);
-```
-
-- 代码示例
-
-```java
-public class FirstActivity extends Activity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (<首次打开 App>) {
-            Properties properties = new Properties();
-            properties.setProperty("<自定义属性>", "<首次打开 App 事件对应的自定义属性值>");
-            DMHubSDK.sharedInstance().track(
-                "<eventId>",
-                "<targetName，如：'首次打开 Android App'>",
-                "<targetId，客户触发首次打开 App 事件对应的目标为 App，可以传入应用包名作为 targetId>",
-                properties
-            );
-        }
-    }
-}
-```
-
-### 5.2 使用极光推送相关 API
-
-如果您使用了极光推送，则可能需要使用极光推送相关 API。
-
-**1. isFromDMHubJPush**
-
-判断接收到的 JPush 推送是否来自 DM Hub 平台。
-
-- 接口定义
-
-```java
-/**
- * @param intent 自定义的 JPush 广播接收器收到的 intent
- *
- * @return 如果传入的 intent 对应的推送来自 DM Hub 平台，返回 true；否则，返回 false
- */
-public boolean isFromDMHubJPush(Intent intent);
-```
-
-- 代码示例
-
-```java
-public class YourReceiver extends BroadcastReceiver {
-
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        boolean fromDMHub = DMHubSDK.sharedInstance().isFromDMHubJPush(intent);
-    }
-}
-```
-
-### 5.3 使用个推推送相关 API
-
-如果您使用了个推推送，则必须根据以下文档调用相关 API。
-
-**1. fetchGeTuiClientId**
-
-将获取到的个推 clientId 传入 DMHubSDK。
-
-- 接口定义
-
-```java
-public void fetchGeTuiClientId(@NonNull String clientId);
-```
-
-- 代码示例
-
-```java
-public class YourIntentService extends GTIntentService {
-
-    @Override
-    public void onReceiveClientId(Context context, String clientid) {
-        DMHubSDK.sharedInstance().fetchGeTuiClientId(clientid);
-    }
-}
-```
-
-**2. fetchGeTuiMessage**
-
-将接收到的个推推送通知的 payload 传入 DMHubSDK。
+如果您使用了个推推送，则需要调用下面的 API 进行记录：
 
 - 接口定义
 
@@ -318,7 +248,74 @@ public class YourIntentService extends GTIntentService {
 }
 ```
 
-## 6. 混淆规则
+### 6.3 跟踪客户自定义事件
+
+注：该接口调用之前需要先根据业务需求在 DM Hub 后台新建自定义事件，在新建自定义事件时，还可以根据需要添加自定义属性。
+
+- 接口定义
+
+```java
+/**
+ * @param eventId    与 DM Hub 中新建的自定义事件对应的事件 Id
+ * @param targetName 对于自定义事件，客户时间轴上只会显示 targetName，相当于事件标题
+ * @param targetId   客户触发该事件对应的目标(如按钮)的 Id
+ * @param properties 事件的自定义属性，必须以在 DM Hub 中新建自定义事件时添加的自定义属性作为 key
+ */
+public void track(@NonNull String eventId, @NonNull String targetName, String targetId, Properties properties);
+```
+
+- 代码示例
+
+```java
+public class FirstActivity extends Activity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        // 记录首次打开 App 事件的示例
+        if (<首次打开 App>) {
+            Properties properties = new Properties();
+            properties.setProperty("<自定义属性>", "<首次打开 App 事件对应的自定义属性值>");
+            DMHubSDK.sharedInstance().track(
+                "<eventId>",
+                "<targetName，如：'首次打开 Android App'>",
+                "<targetId，客户触发首次打开 App 事件对应的目标为 App，可以传入应用包名作为 targetId>",
+                properties
+            );
+        }
+    }
+}
+```
+
+## 7. 其他 API
+
+如果您使用了极光推送，可以通过下面的接口判断接收到的 JPush 推送是否来自 DM Hub 平台：
+
+- 接口定义
+
+```java
+/**
+ * @param intent 自定义的 JPush 广播接收器收到的 intent
+ *
+ * @return 如果传入的 intent 对应的推送来自 DM Hub 平台，返回 true；否则，返回 false
+ */
+public boolean isFromDMHubJPush(Intent intent);
+```
+
+- 代码示例
+
+```java
+public class YourReceiver extends BroadcastReceiver {
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        boolean fromDMHub = DMHubSDK.sharedInstance().isFromDMHubJPush(intent);
+    }
+}
+```
+
+## 8. 混淆规则
 
 在工程的混淆规则文件中添加如下规则：
 
@@ -328,8 +325,7 @@ public class YourIntentService extends GTIntentService {
 -keep class com.convertlab.dmhubsdk.** { *; }
 ```
 
-## 7. 技术支持
+## 9. 技术支持
 
 - 在线客服：在 DM Hub 平台右下角进行客服咨询
 - 电子邮件：<support@convertlab.com>
-
