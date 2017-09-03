@@ -41,8 +41,8 @@
 ## 1. 使用说明
 
 - 本文是 DMHub iOS SDK 标准的开发指南文档，用以指导 SDK 的集成和使用，默认读者已经具备一定的 iOS 开发能力。
-- 本篇指南匹配的 DMHub iOS SDK 版本为： `v0.1.0` 。
-- DMHub iOS SDK 0.1.0 要求  `iOS >= 6.0` 。
+- 本篇指南匹配的 DMHub iOS SDK 版本为： `v0.1.1` 。
+- DMHub iOS SDK 0.1.1 要求  `iOS >= 6.0` 。
 
 ## 2. 开发准备
 
