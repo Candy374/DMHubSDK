@@ -19,11 +19,11 @@
 - [5. 设置客户身份](#5-设置客户身份)
 
 - [6. 跟踪客户事件](#6-跟踪客户事件)
-  - [6.1 跟踪进入、离开视图事件](#61-跟踪进入离开视图事件)
-  - [6.2 跟踪通知推送相关事件](#62-跟踪通知推送相关事件)
-     - [6.2.1 跟踪 JPush 推送相关事件](#621-跟踪-jpush-推送相关事件)
-     - [6.2.2 跟踪 GeTui 推送相关事件](#622-跟踪-getui-推送相关事件)
-  - [6.3 跟踪自定义客户事件](#63-跟踪自定义客户事件)
+  - [6.1 跟踪自定义客户事件](#61-跟踪自定义客户事件)
+  - [6.2 跟踪进入、离开视图事件](#62-跟踪进入离开视图事件)
+  - [6.3 跟踪通知推送相关事件](#63-跟踪通知推送相关事件)
+     - [6.3.1 跟踪 JPush 推送相关事件](#631-跟踪-jpush-推送相关事件)
+     - [6.3.2 跟踪 GeTui 推送相关事件](#632-跟踪-getui-推送相关事件)
 
 - [7. 混淆规则](#7-混淆规则)
 
@@ -129,7 +129,42 @@ public static void setIdentity(@NonNull String identityType, @NonNull String ide
 
 ## 6. 跟踪客户事件
 
-### 6.1 跟踪进入、离开视图事件
+### 6.1 跟踪自定义客户事件
+
+根据业务需求在 DM Hub 后台新建自定义事件后，可以调用该 API 对自定义客户事件进行跟踪。在新建自定义事件时，还可以根据需要添加自定义属性，并在调用 API 时作为参数传入。
+
+- 接口定义
+
+```java
+/**
+ * 跟踪自定义客户事件
+ *
+ * @param eventId    与 DM Hub 中新建的自定义事件对应的事件 Id
+ * @param properties 事件的自定义属性，必须以在 DM Hub 中新建自定义事件时添加的自定义属性作为 key
+ */
+public static void track(@NonNull String eventId, Properties properties);
+```
+
+- 代码示例
+
+```java
+public class FirstActivity extends Activity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        // 记录首次打开 App 事件的示例
+        if (<首次打开 App>) {
+            Properties properties = new Properties();
+            properties.setProperty("<自定义属性>", "<首次打开 App 事件对应的自定义属性值>");
+            DMHubSDK.track("<eventId>", properties);
+        }
+    }
+}
+```
+
+### 6.2 跟踪进入、离开视图事件
 
 - 接口定义
 
@@ -170,11 +205,11 @@ public class YourActivity extends Activity {
 }
 ```
 
-### 6.2 跟踪通知推送相关事件
+### 6.3 跟踪通知推送相关事件
 
 如果您使用了 DM Hub 平台提供的通知推送功能，则可以调用 SDK 提供的相关 API 对来自 DM Hub 平台的通知推送相关事件进行跟踪。
 
-#### 6.2.1 跟踪 JPush 推送相关事件
+#### 6.3.1 跟踪 JPush 推送相关事件
 
 - 接口定义
 
@@ -198,7 +233,7 @@ public class YourJPushReceiver extends BroadcastReceiver {
 }
 ```
 
-#### 6.2.2 跟踪 GeTui 推送相关事件
+#### 6.3.2 跟踪 GeTui 推送相关事件
 
 - 接口定义
 
@@ -220,41 +255,6 @@ public class YourIntentService extends GTIntentService {
         byte[] payload = msg.getPayload();
         if (payload != null) {
             boolean fromDMHub = DMHubSDK.trackGeTuiNotiEvent(new String(payload));
-        }
-    }
-}
-```
-
-### 6.3 跟踪自定义客户事件
-
-根据业务需求在 DM Hub 后台新建自定义事件后，可以调用该 API 对自定义客户事件进行跟踪。在新建自定义事件时，还可以根据需要添加自定义属性，并在调用 API 时作为参数传入。
-
-- 接口定义
-
-```java
-/**
- * 跟踪自定义客户事件
- *
- * @param eventId    与 DM Hub 中新建的自定义事件对应的事件 Id
- * @param properties 事件的自定义属性，必须以在 DM Hub 中新建自定义事件时添加的自定义属性作为 key
- */
-public static void track(@NonNull String eventId, Properties properties);
-```
-
-- 代码示例
-
-```java
-public class FirstActivity extends Activity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
-        // 记录首次打开 App 事件的示例
-        if (<首次打开 App>) {
-            Properties properties = new Properties();
-            properties.setProperty("<自定义属性>", "<首次打开 App 事件对应的自定义属性值>");
-            DMHubSDK.track("<eventId>", properties);
         }
     }
 }
