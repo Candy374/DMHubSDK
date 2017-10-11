@@ -6,12 +6,9 @@
 
 - [1. 使用说明](#1-使用说明)
 
-- [2. 开发准备](#2-开发准备)
-  - [2.1 创建应用](#21-创建应用)
-     - [2.1.1 进入应用设置页面](#211-进入应用设置页面)
-     - [2.1.2 新建应用](#212-新建应用)
-     - [2.1.3 更新权限设置](#213-更新权限设置)
-  - [2.2 工程准备](#22-工程准备)
+- [2. 创建应用](#2-创建应用)
+  - [2.1 进入应用设置页面](#21-进入应用设置页面)
+  - [2.2 新建应用](#22-新建应用)
 
 - [3. 导入 SDK](#3-导入-sdk)
   - [3.1 添加 SDK 文件](#31-添加-sdk-文件)
@@ -19,20 +16,16 @@
   - [3.3 检查静态库文件路径](#33-检查静态库文件路径)
   - [3.4 引入头文件](#34-引入头文件)
 
-- [4. 配置 SDK 相关参数](#4-配置-sdk-相关参数)
+- [4. 初始化](#4-初始化)
 
-- [5. 创建客户和客户身份](#5-创建客户和客户身份)
-  - [5.1 创建带有 JPush 身份的客户](#51-创建带有-jpush-身份的客户)
-  - [5.2 创建带有 GeTui 身份的客户](#52-创建带有-getui-身份的客户)
-  - [5.3 创建带有广告标识符（IDFA）身份的客户](#53-创建带有广告标识符idfa身份的客户)
+- [5. 设置客户身份](#5-设置客户身份)
 
 - [6. 跟踪客户事件](#6-跟踪客户事件)
-  - [6.1 跟踪预置客户事件](#61-跟踪预置客户事件)
-     - [6.1.1 跟踪进入视图事件](#611-跟踪进入视图事件)
-     - [6.1.2 跟踪推送通知事件](#612-跟踪推送通知事件)
-     - [6.1.3 跟踪收到 JPush 自定义消息事件](#613-跟踪收到-jpush-自定义消息事件)
-     - [6.1.4 跟踪收到 GeTui 透传消息事件](#614-跟踪收到-getui-透传消息事件)
-  - [6.2 跟踪自定义客户事件](#62-跟踪自定义客户事件)
+  - [6.1 跟踪客户自定义事件](#61-跟踪客户自定义事件)
+  - [6.2 跟踪进入、离开视图事件](#62-跟踪进入离开视图事件)
+  - [6.3 跟踪通知推送相关事件](#63-跟踪通知推送相关事件)
+     - [6.3.1 跟踪 JPush 推送相关事件](#631-跟踪-jpush-推送相关事件)
+     - [6.3.2 跟踪 GeTui 推送相关事件](#632-跟踪-getui-推送相关事件)
 
 - [7. 技术支持](#7-技术支持)
 
@@ -41,42 +34,30 @@
 ## 1. 使用说明
 
 - 本文是 DMHub iOS SDK 标准的开发指南文档，用以指导 SDK 的集成和使用，默认读者已经具备一定的 iOS 开发能力。
-- 本篇指南匹配的 DMHub iOS SDK 版本为： `v0.1.1` 。
-- DMHub iOS SDK 0.1.1 要求  `iOS >= 6.0` 。
+- 本篇指南匹配的 DMHub iOS SDK 版本为： `v1.1.0` 。
+- DMHub iOS SDK 0.1.1 要求  `iOS >= 7.0` 。
 
-## 2. 开发准备
-
-### 2.1 创建应用
+## 2. 创建应用
 
 集成 DMHub SDK 之前，您首先需要到 DM Hub 平台创建应用。
 
-#### 2.1.1 进入应用设置页面
+### 2.1 进入应用设置页面
 
 点击 DM Hub 平台首页右上角的齿轮图标，选择 `开放与集成` 选项，进入应用设置页面。
 
 ![left | 0x0](../assets/guide01.png)
 
-#### 2.1.2 新建应用
+### 2.2 新建应用
 
-在应用设置页面点击右上角的 `+ 新建` 按钮，在弹出的创建应用弹出框中填写应用名称和描述后保存。
+在应用设置页面点击右上角的 `+ 新建` 按钮，在弹出的创建应用弹出框中填写应用信息后保存。应用创建成功之后，即可获得集成 SDK 所需的 appid。
 
 ![left | 0x0](../assets/guide02.png)
-
-#### 2.1.3 更新权限设置
-
-创建应用成功之后，即可获得集成 SDK 所需的 appid 和 secret 信息。根据开发需求进行权限设置后，点击右下角的 `更新` 按钮（注：即使没有更改权限设置，也要进行更新），完成应用创建。
-
-![left | 0x0](../assets/guide03.png)
-
-### 2.2 工程准备
-
-集成 `极光推送` 或 `个推推送` 。
 
 ## 3. 导入 SDK
 
 ### 3.1 添加 SDK 文件
 
-在 Xcode 中选择 `File` ---> `Add Files to “YOUR_PROJECT_NAME”...` ，将 libs 目录下的 DMHubSDK.h 头文件和 dmhubsdk-ios-x.x.x.a 静态库文件添加到工程目录中。
+在 Xcode 中选择 `File` ---> `Add Files to “YOUR_PROJECT_NAME”...` ，将 [libs 目录](libs) 下的 DMHubSDK.h 头文件和 dmhubsdk-ios-x.x.x.a 静态库文件添加到工程目录中。
 
 ### 3.2 添加系统库支持
 
@@ -87,7 +68,6 @@ UIKit.framework
 Foundation.framework
 SystemConfiguration.framework
 libsqlite3.tbd
-AdSupport.framework （如果不使用 IDFA，则不需要添加该系统库）
 ```
 
 ### 3.3 检查静态库文件路径
@@ -102,158 +82,93 @@ AdSupport.framework （如果不使用 IDFA，则不需要添加该系统库）
 #import "DMHubSDK.h"
 ```
 
-## 4. 配置 SDK 相关参数
+## 4. 初始化
 
-右键单击 Info.plist 文件，`Open As` ---> `Source Code` ，配置 SDK 所需参数：
-
-```xml
-<key>DMHubSDKAppId</key>
-<string>在 DM Hub 平台获得的 appid</string>
-
-<key>DMHubSDKSecret</key>
-<string>在 DM Hub 平台获得的 secret</string>
-
-<!--
-    您所采用的推送平台，支持极光和个推。
-    如果您采用极光推送，请填写 'jpush'(默认，可以不配置)；
-    如果您采用个推推送，请填写 'getui'；
-    如果您同时采用极光推送和个推推送，请填写 'jpush&amp;getui'。
--->
-<key>DMHubPushChannel</key>
-<string>采用的推送平台</string>
-```
-
-如果您是在测试账号下创建的应用，则需要设置支持 Http 传输，并配置 `DMHubServer` 参数：
-
-```xml
-<key>NSAppTransportSecurity</key>
-<dict>
-    <key>NSAllowsArbitraryLoads</key>
-    <true/>
-</dict>
-
-<key>DMHubServer</key>
-<string>http://api.convertwork.cn</string>
-```
-
-## 5. 创建客户和客户身份
-
-为了跟踪客户事件，需要先创建客户和客户身份，DMHubSDK 提供了以下三个 API 来创建客户和客户身份，请开发者根据项目需求调用。
-
-以下三个 API ，如果重复调用并传入相同参数，则不会重复进行处理；如果客户已经存在，则不会重复创建客户，而只是将传入的身份信息与客户绑定；创建客户和客户身份的 API 与跟踪客户事件的 API 在调用上不需要区分先后顺序，SDK 内部会进行处理。
-
-### 5.1 创建带有 JPush 身份的客户
-
-如果您采用了极光推送，请在 `AppDelegate.m` 文件中调用此 API 创建带有 JPush 身份的客户。
+使用 SDK 记录事件之前需要先进行初始化，在整个应用程序全局，只需要进行一次初始化，SDK 会在初始化时记录打开 App 事件。
 
 - 接口定义
 
 ```objectivec
 /**
- 添加客户的 JPush 身份信息
+ 启动 SDK
 
- @param jPushAppKey JPush 的 AppKey
- @param jPushId     JPush SDK 向 JPush Server 注册得到的注册 Id
+ @param appId 在 DM Hub 平台创建应用时获得的 appid
+ @param prod 是否在生产环境上运行，如果传入 NO，则在验证环境运行
  */
-- (void)fetchJPushAppKey:(NSString *_Nonnull)jPushAppKey
-                 jPushId:(NSString *_Nonnull)jPushId;
++ (void)startWithAppId:(NSString *_Nonnull)appId
+                inProd:(BOOL)prod;
 ```
 
 - 代码示例
 
+在 `AppDelegate.m` 文件中的 `- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions` 方法中进行初始化：
+
 ```objectivec
-// AppDelegate.m
-
-@implementation AppDelegate
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [JPUSHService registrationIDCompletionHandler:^(int resCode, NSString *registrationID) {
-        // 添加客户的 JPush 身份信息
-        [[DMHubSDK shared] fetchJPushAppKey:@"JPush 的 AppKey" jPushId:registrationID];
-    }];
-}
 
-@end
+    // 初始化 DMHubSDK
+    [DMHubSDK startWithAppId:@"cl03b215b660b52d3" inProd:YES];
+
+    return YES;
+}
 ```
 
-### 5.2 创建带有 GeTui 身份的客户
+## 5. 设置客户身份
 
-如果您采用了个推推送，请在 `AppDelegate.m` 文件中调用此 API 创建带有 GeTui 身份的客户。
+为了将客户事件绑定到客户身上，需要在 App 获取到客户身份信息时，设置客户身份。匿名事件会保存 30 天。
 
 - 接口定义
 
 ```objectivec
 /**
- 添加客户的 GeTui 身份信息
+ 设置客户身份，用于绑定事件。如果重复设置，将会使用新的客户身份进行事件绑定
 
- @param geTuiAppKey GeTui 的 AppKey
- @param geTuiId     GeTui SDK 向 GeTui Server 注册得到的 clientId
+ @param type 身份类型
+ @param value 身份标识
  */
-- (void)fetchGeTuiAppKey:(NSString *_Nonnull)geTuiAppKey
-                 geTuiId:(NSString *_Nonnull)geTuiId;
-```
-
-- 代码示例
-
-```objectivec
-// GeTuiSdkDelegate 的回调方法
-- (void)GeTuiSdkDidRegisterClient:(NSString *)clientId {
-    // 添加客户的 GeTui 身份信息
-    [[DMHubSDK shared] fetchGeTuiAppKey:@"GeTui 的 AppKey" geTuiId:clientId];
-}
-```
-
-### 5.3 创建带有广告标识符（IDFA）身份的客户
-
-如果需要上传 IDFA 作为客户身份，请在 `AppDelegate.m` 文件中调用此 API 创建带有广告标识符（IDFA）身份的客户。
-
-- 接口定义
-
-```objectivec
-/**
- 添加客户的广告标识符（IDFA）信息
- 
- 如果不需要使用 IDFA，请不要调用此方法。调用此方法后，IDFA 将会添加为客户的一个身份
- 
- @param advertisingIdentifier 广告标识符（IDFA）
- */
-- (void)fetchIdfa:(NSString *_Nonnull)advertisingIdentifier;
-```
-
-- 代码示例
-
-```objectivec
-// AppDelegate.m
-// 导入 IDFA 功能所需头文件
-#import <AdSupport/AdSupport.h>
-
-@implementation AppDelegate
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // 获取 IDFA
-    NSString *idfa = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
-    // 添加客户的广告标识符（IDFA）信息
-    [[DMHubSDK shared] fetchIdfa:idfa];
-}
-
-@end
++ (void)setIdentityWithType:(NSString *_Nonnull)type
+                      value:(NSString *_Nonnull)value;
 ```
 
 ## 6. 跟踪客户事件
 
-DMHubSDK 提供了以下 API 来跟踪客户事件，请开发者根据项目需求调用。
+### 6.1 跟踪客户自定义事件
 
-DM Hub 平台预置了 4 个客户事件：`打开手机应用` 、`进入手机视图`、`收到手机应用通知`、`点击手机应用通知`。
+根据业务需求在 DM Hub 后台新建自定义事件后，可以调用该 API 对自定义客户事件进行跟踪。在新建自定义事件时，还可以根据需要添加自定义属性，并在调用 API 时作为参数传入。
 
-对于 DM Hub 平台预置事件，DMHubSDK 会默认跟踪 `打开手机应用` 事件，其余三个预置事件需要由开发者自行调用 SDK 提供的 API，并根据接口定义传入正确参数；对于推送通知相关事件，SDK 只会对由 DM Hub 平台发出的推送通知引发的客户事件进行记录。
+- 接口定义
 
-对于自定义事件，需要先在 DM Hub 后台新建自定义事件，在新建自定义事件时，还可以根据业务需要添加自定义属性。在调用跟踪客户自定义事件的 API 时，可以传入自定义属性。
+```objectivec
+/**
+ 跟踪自定义客户事件
 
-对于离线状态下产生的客户事件，SDK 会先存储到本地，当检测到有网络连接时再发送给 DM Hub 平台。
+ @param eventId 与 DM Hub 中新建的自定义事件对应的事件 Id
+ @param properties 事件的自定义属性，必须以在 DM Hub 中新建自定义事件时添加的自定义属性作为 key
+ */
++ (void)trackWithEventId:(NSString *_Nonnull)eventId
+              properties:(Properties _Nullable)properties;
+```
 
-### 6.1 跟踪预置客户事件
+- 代码示例
 
-#### 6.1.1 跟踪进入视图事件
+```objectivec
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+    // 初始化 DMHubSDK
+    [DMHubSDK startWithAppId:@"cl03b215b660b52d3" inProd:YES];
+
+    // 跟踪首次打开 App 事件示例
+    if (<首次打开 App>) {
+        NSMutableDictionary<NSString *, NSString *> *properties = [NSMutableDictionary dictionary];
+        [properties setValue:@"<自定义属性>" forKey:@"<首次打开 App 事件对应的自定义属性值>"];
+        [DMHubSDK trackWithEventId:@"<eventId>" properties:properties];
+    }
+
+    return YES;
+}
+```
+
+### 6.2 跟踪进入、离开视图事件
 
 - 接口定义
 
@@ -261,166 +176,187 @@ DM Hub 平台预置了 4 个客户事件：`打开手机应用` 、`进入手机
 /**
  跟踪进入视图事件
 
- @param viewName 视图的名称，客户时间轴上的显示为：'进入手机视图 ${viewName}'
+ @param viewName 视图的名称
  */
-- (void)trackOpenView:(NSString *_Nonnull)viewName;
++ (void)trackOpenView:(NSString *_Nonnull)viewName;
+
+/**
+ 跟踪离开视图事件
+
+ @param viewName 视图的名称
+ */
++ (void)trackExitView:(NSString *_Nonnull)viewName;
 ```
 
 - 代码示例
 
 ```objectivec
-@implementation ViewController
+@implementation YourViewController
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
     // 跟踪进入视图事件
-    [[DMHubSDK shared] trackOpenView:@"{viewName}"];
+    [DMHubSDK trackOpenView:@"<viewName>"];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    // 跟踪离开视图事件
+    [DMHubSDK trackExitView:@"<viewName>"];
 }
 
 @end
 ```
 
-#### 6.1.2 跟踪推送通知事件
+### 6.3 跟踪通知推送相关事件
+
+如果您使用了 DM Hub 平台提供的通知推送功能，则可以调用 SDK 提供的相关 API 对来自 DM Hub 平台的通知推送相关事件进行跟踪。
+
+#### 6.3.1 跟踪 JPush 推送相关事件
 
 - 接口定义
 
 ```objectivec
 /**
- 跟踪收到推送通知事件
+ 跟踪收到 JPush 通知事件
 
- @param userInfo 推送通知中的 userInfo
- @return 如果传入的 userInfo 对应的推送通知来自 DM Hub 平台，返回 YES；否则，返回 NO
+ @param userInfo JPush 通知中的 userInfo
+ @param jPushAppKey JPush 的 AppKey
+ @return 如果传入的 userInfo 对应的 JPush 通知来自 DM Hub 平台，返回 YES；否则，返回 NO
  */
-- (BOOL)trackReceiveNotification:(NSDictionary *_Nonnull)userInfo;
++ (BOOL)trackReceiveJPushNoti:(NSDictionary *_Nonnull)userInfo
+                  jPushAppKey:(NSString *_Nonnull)jPushAppKey;
 
 /**
- 跟踪点击推送通知事件
+ 跟踪点击 JPush 通知事件
 
- @param userInfo 推送通知中的 userInfo
- @return 如果传入的 userInfo 对应的推送通知来自 DM Hub 平台，返回 YES；否则，返回 NO
+ @param userInfo JPush 通知中的 userInfo
+ @param jPushAppKey JPush 的 AppKey
+ @return 如果传入的 userInfo 对应的 JPush 通知来自 DM Hub 平台，返回 YES；否则，返回 NO
  */
-- (BOOL)trackClickNotification:(NSDictionary *_Nonnull)userInfo;
++ (BOOL)trackClickJPushNoti:(NSDictionary *_Nonnull)userInfo
+                jPushAppKey:(NSString *_Nonnull)jPushAppKey;
+
+/**
+ 跟踪收到 JPush 自定义消息事件
+
+ @param notification JPush 收到自定义消息的回调方法中传入的 notification
+ @param jPushAppKey JPush 的 AppKey
+ @return 如果传入的 notification 对应的 JPush 自定义消息来自 DM Hub 平台，返回 YES；否则，返回 NO
+ */
++ (BOOL)trackReceiveJPushMessage:(NSNotification *_Nonnull)notification
+                     jPushAppKey:(NSString *_Nonnull)jPushAppKey;
 ```
 
 - 代码示例
 
 ```objectivec
-// 在收到推送通知和点击推送通知的回调方法中进行调用，由于不同的系统版本、不同的推送平台等因素会导致回调方法也不同，因此此处仅示例在部分回调方法中如何进行调用
-@implementation AppDelegate
-
-// iOS 7 及以上系统收到通知的回调
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    // 跟踪收到推送通知事件
-    [[DMHubSDK shared] trackReceiveNotification:userInfo];
+    // 跟踪收到 JPush 通知事件
+    [DMHubSDK trackReceiveJPushNoti:userInfo jPushAppKey:JPUSH_APP_KEY];
 }
 
-// iOS 6 及以下系统受到通知的回调
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    // 跟踪收到推送通知事件
-    [[DMHubSDK shared] trackReceiveNotification:userInfo];
+    // 跟踪收到 JPush 通知事件
+    [DMHubSDK trackReceiveJPushNoti:userInfo jPushAppKey:JPUSH_APP_KEY];
 }
 
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
 #pragma mark - JPUSHRegisterDelegate
 - (void)jpushNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger))completionHandler {
     NSDictionary *userInfo = notification.request.content.userInfo;
-    // 跟踪收到推送通知事件
-    [[DMHubSDK shared] trackReceiveNotification:userInfo];
+    // 跟踪收到 JPush 通知事件
+    [DMHubSDK trackReceiveJPushNoti:userInfo jPushAppKey:JPUSH_APP_KEY];
 }
 
 - (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
     NSDictionary *userInfo = response.notification.request.content.userInfo;
-    // 跟踪点击推送通知事件
-    [[DMHubSDK shared] trackClickNotification:userInfo];
+    // 跟踪点击 JPush 通知事件
+    [DMHubSDK trackClickJPushNoti:userInfo jPushAppKey:JPUSH_APP_KEY];
 }
 #endif
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
-    NSDictionary *userInfo = notification.request.content.userInfo;
-    // 跟踪收到推送通知事件
-    [[DMHubSDK shared] trackReceiveNotification:userInfo];
+// 收到 JPush 自定义消息的回调
+- (void)didReceiveJPushMessage:(NSNotification *)notification {
+    [DMHubSDK trackReceiveJPushMessage:notification jPushAppKey:JPUSH_APP_KEY];
 }
-
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
-    NSDictionary *userInfo = response.notification.request.content.userInfo;
-    // 跟踪点击推送通知事件
-    [[DMHubSDK shared] trackClickNotification:userInfo];
-}
-#endif
-
-@end
 ```
 
-#### 6.1.3 跟踪收到 JPush 自定义消息事件
+#### 6.3.2 跟踪 GeTui 推送相关事件
 
 - 接口定义
 
 ```objectivec
 /**
- 跟踪收到 JPush 自定义消息事件
+ 跟踪收到 GeTui 通知事件
 
- @param notification JPush 收到自定义消息的回调方法中传入的 notification
- @return 如果传入的 notification 对应的 JPush 自定义消息来自 DM Hub 平台，返回 YES；否则，返回 NO
+ @param userInfo GeTui 通知中的 userInfo
+ @param geTuiAppKey GeTui 的 AppKey
+ @return 如果传入的 userInfo 对应的 GeTui 通知来自 DM Hub 平台，返回 YES；否则，返回 NO
  */
-- (BOOL)trackReceiveJPushMessage:(NSNotification *_Nonnull)notification;
-```
++ (BOOL)trackReceiveGeTuiNoti:(NSDictionary *_Nonnull)userInfo
+                  geTuiAppKey:(NSString *_Nonnull)geTuiAppKey;
 
-- 代码示例
+/**
+ 跟踪点击 GeTui 通知事件
 
-```objectivec
-- (void)didReceiveJPushMessage:(NSNotification *)notification {
-    [[DMHubSDK shared] trackReceiveJPushMessage:notification];
-}
-```
+ @param userInfo GeTui 通知中的 userInfo
+ @param geTuiAppKey GeTui 的 AppKey
+ @return 如果传入的 userInfo 对应的 GeTui 通知来自 DM Hub 平台，返回 YES；否则，返回 NO
+ */
++ (BOOL)trackClickGeTuiNoti:(NSDictionary *_Nonnull)userInfo
+                geTuiAppKey:(NSString *_Nonnull)geTuiAppKey;
 
-#### 6.1.4 跟踪收到 GeTui 透传消息事件
-
-- 接口定义
-
-```objectivec
 /**
  跟踪收到 GeTui 透传消息事件
 
  @param payloadData GeTui 收到透传消息的回调方法中传入的 payloadData
  @param offLine GeTui 收到透传消息的回调方法中传入的 offLine
+ @param geTuiAppKey GeTui 的 AppKey
  @return 如果传入的 payloadData 对应的 GeTui 透传消息来自 DM Hub 平台，返回 YES；否则，返回 NO
  */
-- (BOOL)trackReceiveGeTuiPayloadData:(NSData *_Nonnull)payloadData
-                             offLine:(BOOL)offLine;
++ (BOOL)trackReceiveGeTuiPayloadData:(NSData *_Nonnull)payloadData
+                             offLine:(BOOL)offLine
+                         geTuiAppKey:(NSString *_Nonnull)geTuiAppKey;
 ```
 
 - 代码示例
 
 ```objectivec
-- (void)GeTuiSdkDidReceivePayloadData:(NSData *)payloadData andTaskId:(NSString *)taskId andMsgId:(NSString *)msgId andOffLine:(BOOL)offLine fromGtAppId:(NSString *)appId {
-    [[DMHubSDK shared] trackReceiveGeTuiPayloadData:payloadData offLine:offLine];
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    // 跟踪收到 GeTui 通知事件
+    [DMHubSDK trackReceiveGeTuiNoti:userInfo geTuiAppKey:GETUI_APP_KEY];
 }
-```
 
-### 6.2 跟踪自定义客户事件
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    // 跟踪收到 GeTui 通知事件
+    [DMHubSDK trackReceiveGeTuiNoti:userInfo geTuiAppKey:GETUI_APP_KEY];
+}
 
-在 DM Hub 后台新建的自定义事件，可以通过调用此 API 进行跟踪。
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
+    NSDictionary *userInfo = notification.request.content.userInfo;
+    // 跟踪收到 GeTui 通知事件
+    [DMHubSDK trackReceiveGeTuiNoti:userInfo geTuiAppKey:GETUI_APP_KEY];
+}
 
-```objectivec
-/**
- 跟踪自定义客户事件
- 
- @param eventId    与 DM Hub 中新建的自定义事件对应的事件 Id
- @param targetName 对于自定义事件，客户时间轴上只会显示 targetName，相当于事件标题
- @param targetId   客户触发该事件对应的目标(如按钮)的 Id
- @param properties 事件的自定义属性，必须以在 DM Hub 中新建自定义事件时添加的自定义属性作为 key
- */
-typedef NSDictionary<NSString *, NSString *> * Properties;
-- (void)trackWithEventId:(NSString *_Nonnull)eventId
-              targetName:(NSString *_Nonnull)targetName
-                targetId:(NSString *_Nullable)targetId
-              properties:(Properties _Nullable)properties;
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
+    NSDictionary *userInfo = response.notification.request.content.userInfo;
+    // 跟踪点击 GeTui 通知事件
+    [DMHubSDK trackClickGeTuiNoti:userInfo geTuiAppKey:GETUI_APP_KEY];
+}
+#endif
+
+// 收到 GeTui 透传消息的回调
+- (void)GeTuiSdkDidReceivePayloadData:(NSData *)payloadData andTaskId:(NSString *)taskId andMsgId:(NSString *)msgId andOffLine:(BOOL)offLine fromGtAppId:(NSString *)appId {
+    [DMHubSDK trackReceiveGeTuiPayloadData:payloadData offLine:offLine geTuiAppKey:GETUI_APP_KEY];
+}
 ```
 
 ## 7. 技术支持
 
-- 在线客服：在 DM Hub 平台右下角进行客服咨询
+- 在线客服：点击 DM Hub 平台右侧的 `客服咨询` 按钮进行咨询
 - 电子邮件：<support@convertlab.com>
 

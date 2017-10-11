@@ -12,106 +12,115 @@ typedef NSDictionary<NSString *, NSString *> * Properties;
 
 @interface DMHubSDK : NSObject
 
-/**
- 在 Info.plist 文件中配置的 DMHubSDKAppId
- */
-@property (nonatomic, readonly, copy) NSString * _Nullable appId;
+
 
 /**
- 在 Info.plist 文件中配置的 DMHubSDKSecret
+ 启动 SDK
+
+ @param appId 在 DM Hub 平台创建应用时获得的 appid
+ @param prod 是否在生产环境上运行，如果传入 NO，则在验证环境运行
  */
-@property (nonatomic, readonly, copy) NSString * _Nullable secret;
-
-
-
-#pragma mark - 单例模式
-+ (instancetype _Nonnull)shared;
-
-
-
-#pragma mark - 创建客户和客户身份
-/**
- 添加客户的 JPush 身份信息
-
- @param jPushAppKey JPush 的 AppKey
- @param jPushId     JPush SDK 向 JPush Server 注册得到的注册 Id
- */
-- (void)fetchJPushAppKey:(NSString *_Nonnull)jPushAppKey
-                 jPushId:(NSString *_Nonnull)jPushId;
++ (void)startWithAppId:(NSString *_Nonnull)appId
+                inProd:(BOOL)prod;
 
 /**
- 添加客户的 GeTui 身份信息
+ 设置客户身份，用于绑定事件。如果重复设置，将会使用新的客户身份进行事件绑定
 
- @param geTuiAppKey GeTui 的 AppKey
- @param geTuiId     GeTui SDK 向 GeTui Server 注册得到的 clientId
+ @param type 身份类型
+ @param value 身份标识
  */
-- (void)fetchGeTuiAppKey:(NSString *_Nonnull)geTuiAppKey
-                 geTuiId:(NSString *_Nonnull)geTuiId;
-
-/**
- 添加客户的广告标识符（IDFA）信息
- 
- 如果不需要使用 IDFA，请不要调用此方法。调用此方法后，IDFA 将会添加为客户的一个身份
- 
- @param advertisingIdentifier 广告标识符（IDFA）
- */
-- (void)fetchIdfa:(NSString *_Nonnull)advertisingIdentifier;
++ (void)setIdentityWithType:(NSString *_Nonnull)type
+                      value:(NSString *_Nonnull)value;
 
 
 
-#pragma mark - 跟踪客户事件
 /**
  跟踪自定义客户事件
- 
- @param eventId    与 DM Hub 中新建的自定义事件对应的事件 Id
- @param targetName 对于自定义事件，客户时间轴上只会显示 targetName，相当于事件标题
- @param targetId   客户触发该事件对应的目标(如按钮)的 Id
+
+ @param eventId 与 DM Hub 中新建的自定义事件对应的事件 Id
  @param properties 事件的自定义属性，必须以在 DM Hub 中新建自定义事件时添加的自定义属性作为 key
  */
-- (void)trackWithEventId:(NSString *_Nonnull)eventId
-              targetName:(NSString *_Nonnull)targetName
-                targetId:(NSString *_Nullable)targetId
++ (void)trackWithEventId:(NSString *_Nonnull)eventId
               properties:(Properties _Nullable)properties;
 
 /**
  跟踪进入视图事件
 
- @param viewName 视图的名称，客户时间轴上的显示为：'进入手机视图 ${viewName}'
+ @param viewName 视图的名称
  */
-- (void)trackOpenView:(NSString *_Nonnull)viewName;
++ (void)trackOpenView:(NSString *_Nonnull)viewName;
 
 /**
- 跟踪收到推送通知事件
+ 跟踪离开视图事件
 
- @param userInfo 推送通知中的 userInfo
- @return 如果传入的 userInfo 对应的推送通知来自 DM Hub 平台，返回 YES；否则，返回 NO
+ @param viewName 视图的名称
  */
-- (BOOL)trackReceiveNotification:(NSDictionary *_Nonnull)userInfo;
++ (void)trackExitView:(NSString *_Nonnull)viewName;
+
+
 
 /**
- 跟踪点击推送通知事件
+ 跟踪收到 JPush 通知事件
 
- @param userInfo 推送通知中的 userInfo
- @return 如果传入的 userInfo 对应的推送通知来自 DM Hub 平台，返回 YES；否则，返回 NO
+ @param userInfo JPush 通知中的 userInfo
+ @param jPushAppKey JPush 的 AppKey
+ @return 如果传入的 userInfo 对应的 JPush 通知来自 DM Hub 平台，返回 YES；否则，返回 NO
  */
-- (BOOL)trackClickNotification:(NSDictionary *_Nonnull)userInfo;
++ (BOOL)trackReceiveJPushNoti:(NSDictionary *_Nonnull)userInfo
+                  jPushAppKey:(NSString *_Nonnull)jPushAppKey;
+
+/**
+ 跟踪点击 JPush 通知事件
+
+ @param userInfo JPush 通知中的 userInfo
+ @param jPushAppKey JPush 的 AppKey
+ @return 如果传入的 userInfo 对应的 JPush 通知来自 DM Hub 平台，返回 YES；否则，返回 NO
+ */
++ (BOOL)trackClickJPushNoti:(NSDictionary *_Nonnull)userInfo
+                jPushAppKey:(NSString *_Nonnull)jPushAppKey;
 
 /**
  跟踪收到 JPush 自定义消息事件
 
  @param notification JPush 收到自定义消息的回调方法中传入的 notification
+ @param jPushAppKey JPush 的 AppKey
  @return 如果传入的 notification 对应的 JPush 自定义消息来自 DM Hub 平台，返回 YES；否则，返回 NO
  */
-- (BOOL)trackReceiveJPushMessage:(NSNotification *_Nonnull)notification;
++ (BOOL)trackReceiveJPushMessage:(NSNotification *_Nonnull)notification
+                     jPushAppKey:(NSString *_Nonnull)jPushAppKey;
+
+
+
+/**
+ 跟踪收到 GeTui 通知事件
+
+ @param userInfo GeTui 通知中的 userInfo
+ @param geTuiAppKey GeTui 的 AppKey
+ @return 如果传入的 userInfo 对应的 GeTui 通知来自 DM Hub 平台，返回 YES；否则，返回 NO
+ */
++ (BOOL)trackReceiveGeTuiNoti:(NSDictionary *_Nonnull)userInfo
+                  geTuiAppKey:(NSString *_Nonnull)geTuiAppKey;
+
+/**
+ 跟踪点击 GeTui 通知事件
+
+ @param userInfo GeTui 通知中的 userInfo
+ @param geTuiAppKey GeTui 的 AppKey
+ @return 如果传入的 userInfo 对应的 GeTui 通知来自 DM Hub 平台，返回 YES；否则，返回 NO
+ */
++ (BOOL)trackClickGeTuiNoti:(NSDictionary *_Nonnull)userInfo
+                geTuiAppKey:(NSString *_Nonnull)geTuiAppKey;
 
 /**
  跟踪收到 GeTui 透传消息事件
 
  @param payloadData GeTui 收到透传消息的回调方法中传入的 payloadData
  @param offLine GeTui 收到透传消息的回调方法中传入的 offLine
+ @param geTuiAppKey GeTui 的 AppKey
  @return 如果传入的 payloadData 对应的 GeTui 透传消息来自 DM Hub 平台，返回 YES；否则，返回 NO
  */
-- (BOOL)trackReceiveGeTuiPayloadData:(NSData *_Nonnull)payloadData
-                             offLine:(BOOL)offLine;
++ (BOOL)trackReceiveGeTuiPayloadData:(NSData *_Nonnull)payloadData
+                             offLine:(BOOL)offLine
+                         geTuiAppKey:(NSString *_Nonnull)geTuiAppKey;
 
 @end
