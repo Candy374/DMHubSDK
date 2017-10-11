@@ -98,7 +98,7 @@ public static void init(@NonNull Context context, boolean prod);
 
 - 代码示例
 
-在自定义的 `Application` 中的 `onCreate` 方法中开启调试模式并进行初始化：
+在自定义的 `Application` 中的 `onCreate` 方法中进行初始化：
 
 ```java
 public class YourApp extends Application {
