@@ -27,14 +27,12 @@
      - [6.3.1 跟踪 JPush 推送相关事件](#631-跟踪-jpush-推送相关事件)
      - [6.3.2 跟踪 GeTui 推送相关事件](#632-跟踪-getui-推送相关事件)
 
-- [7. 技术支持](#7-技术支持)
-
 
 
 ## 1. 使用说明
 
 - 本文是 DMHub iOS SDK 标准的开发指南文档，用以指导 SDK 的集成和使用，默认读者已经具备一定的 iOS 开发能力。
-- 本篇指南匹配的 DMHub iOS SDK 版本为： `v1.1.0` 。
+- 本篇指南匹配的 DMHub iOS SDK 版本为： `v1.1.1` 。
 - DMHub iOS SDK 0.1.1 要求  `iOS >= 7.0` 。
 
 ## 2. 创建应用
@@ -93,6 +91,13 @@ libsqlite3.tbd
  启动 SDK
 
  @param appId 在 DM Hub 平台创建应用时获得的 appid
+ */
++ (void)startWithAppId:(NSString *_Nonnull)appId;
+
+/**
+ 启动 SDK，并设置运行环境
+
+ @param appId 在 DM Hub 平台创建应用时获得的 appid
  @param prod 是否在生产环境上运行，如果传入 NO，则在验证环境运行
  */
 + (void)startWithAppId:(NSString *_Nonnull)appId
@@ -107,7 +112,7 @@ libsqlite3.tbd
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
     // 初始化 DMHubSDK
-    [DMHubSDK startWithAppId:@"cl03b215b660b52d3" inProd:YES];
+    [DMHubSDK startWithAppId:@"<在 DM Hub 平台获得的 appid>"];
 
     return YES;
 }
@@ -134,7 +139,7 @@ libsqlite3.tbd
 
 ### 6.1 跟踪客户自定义事件
 
-根据业务需求在 DM Hub 后台新建自定义事件后，可以调用该 API 对自定义客户事件进行跟踪。在新建自定义事件时，还可以根据需要添加自定义属性，并在调用 API 时作为参数传入。
+根据业务需求在 DM Hub 后台 [新建自定义事件](../EVENT_GUIDE.md) 后，可以调用该 API 对自定义客户事件进行跟踪。在新建自定义事件时，还可以根据需要添加自定义属性，并在调用 API 时作为参数传入。
 
 - 接口定义
 
@@ -155,12 +160,12 @@ libsqlite3.tbd
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
     // 初始化 DMHubSDK
-    [DMHubSDK startWithAppId:@"cl03b215b660b52d3" inProd:YES];
+    [DMHubSDK startWithAppId:@"<在 DM Hub 平台获得的 appid>"];
 
     // 跟踪首次打开 App 事件示例
     if (<首次打开 App>) {
         NSMutableDictionary<NSString *, NSString *> *properties = [NSMutableDictionary dictionary];
-        [properties setValue:@"<自定义属性>" forKey:@"<首次打开 App 事件对应的自定义属性值>"];
+        [properties setValue:@"<首次打开 App 事件对应的自定义属性值>" forKey:@"<自定义属性名称>"];
         [DMHubSDK trackWithEventId:@"<eventId>" properties:properties];
     }
 
@@ -354,9 +359,3 @@ libsqlite3.tbd
     [DMHubSDK trackReceiveGeTuiPayloadData:payloadData offLine:offLine geTuiAppKey:GETUI_APP_KEY];
 }
 ```
-
-## 7. 技术支持
-
-- 在线客服：点击 DM Hub 平台右侧的 `客服咨询` 按钮进行咨询
-- 电子邮件：<support@convertlab.com>
-

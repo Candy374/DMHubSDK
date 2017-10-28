@@ -18,6 +18,13 @@ typedef NSDictionary<NSString *, NSString *> * Properties;
  启动 SDK
 
  @param appId 在 DM Hub 平台创建应用时获得的 appid
+ */
++ (void)startWithAppId:(NSString *_Nonnull)appId;
+
+/**
+ 启动 SDK，并设置运行环境
+
+ @param appId 在 DM Hub 平台创建应用时获得的 appid
  @param prod 是否在生产环境上运行，如果传入 NO，则在验证环境运行
  */
 + (void)startWithAppId:(NSString *_Nonnull)appId
