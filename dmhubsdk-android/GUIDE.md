@@ -27,15 +27,13 @@
 
 - [7. 混淆规则](#7-混淆规则)
 
-- [8. 技术支持](#8-技术支持)
-
 
 
 ## 1. 使用说明
 
 - 本文是 DMHub Android SDK 标准的开发指南文档，用以指导 SDK 的集成和使用，默认读者已经具备一定的 Android 开发能力。
-- 本篇指南匹配的 DMHub Android SDK 版本为： `v1.1.1` 。
-- DMHub Android SDK 1.1.1 要求  `Java >= 1.7`  &  `Android API >= 9` 。
+- 本篇指南匹配的 DMHub Android SDK 版本为： `v1.1.2` 。
+- DMHub Android SDK 1.1.2 要求  `Java >= 1.7`  &  `Android API >= 9` 。
 
 ## 2. 创建应用
 
@@ -57,7 +55,7 @@
 
 ### 3.1 添加 jar 包
 
-复制 libs 目录下的 [dmhubsdk-android-1.1.1.jar](libs/dmhubsdk-android-1.1.1.jar) 文件到工程主 module 的 libs 目录下，右键 jar 包，选择 `Add As Library...` ，将 jar 作为 Library 添加到主 module 中。
+复制 libs 目录下的 [dmhubsdk-android-1.1.2.jar](libs/dmhubsdk-android-1.1.2.jar) 文件到工程主 module 的 libs 目录下，右键 jar 包，选择 `Add As Library...` ，将 jar 作为 Library 添加到主 module 中。
 
 ### 3.2 配置 AndroidManifest.xml
 
@@ -90,6 +88,11 @@
 /**
  * 在自定义的 Application 中初始化 DMHubSDK
  * 在整个应用程序全局，只需要进行一次初始化，SDK 会在初始化时记录打开 App 事件
+ */
+public static void init(@NonNull Context context);
+
+/**
+ * 初始化 DMHubSDK，并设置运行环境
  *
  * @param prod 是否在生产环境上运行，如果传入 false，则在验证环境运行
  */
@@ -108,7 +111,7 @@ public class YourApp extends Application {
         super.onCreate();
 
         // 初始化 DMHubSDK
-        DMHubSDK.init(this, true);
+        DMHubSDK.init(this);
     }
 }
 ```
@@ -131,7 +134,7 @@ public static void setIdentity(@NonNull String identityType, @NonNull String ide
 
 ### 6.1 跟踪自定义客户事件
 
-根据业务需求在 DM Hub 后台新建自定义事件后，可以调用该 API 对自定义客户事件进行跟踪。在新建自定义事件时，还可以根据需要添加自定义属性，并在调用 API 时作为参数传入。
+根据业务需求在 DM Hub 后台 [新建自定义事件](../EVENT_GUIDE.md) 后，可以调用该 API 对自定义客户事件进行跟踪。在新建自定义事件时，还可以根据需要添加自定义属性，并在调用 API 时作为参数传入。
 
 - 接口定义
 
@@ -157,7 +160,7 @@ public class FirstActivity extends Activity {
         // 记录首次打开 App 事件的示例
         if (<首次打开 App>) {
             Properties properties = new Properties();
-            properties.setProperty("<自定义属性>", "<首次打开 App 事件对应的自定义属性值>");
+            properties.setProperty("<自定义属性名称>", "<首次打开 App 事件对应的自定义属性值>");
             DMHubSDK.track("<eventId>", properties);
         }
     }
@@ -269,9 +272,3 @@ public class YourIntentService extends GTIntentService {
 -dontwarn com.convertlab.dmhubsdk.**
 -keep class com.convertlab.dmhubsdk.** { *; }
 ```
-
-## 8. 技术支持
-
-- 在线客服：点击 DM Hub 平台右侧的 `客服咨询` 按钮进行咨询
-- 电子邮件：<support@convertlab.com>
-
