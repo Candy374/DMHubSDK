@@ -32,8 +32,8 @@
 ## 1. 使用说明
 
 - 本文是 DMHub Android SDK 标准的开发指南文档，用以指导 SDK 的集成和使用，默认读者已经具备一定的 Android 开发能力。
-- 本篇指南匹配的 DMHub Android SDK 版本为： `v1.1.2` 。
-- DMHub Android SDK 1.1.2 要求  `Java >= 1.7`  &  `Android API >= 9` 。
+- 本篇指南匹配的 DMHub Android SDK 版本为： `v1.1.3` 。
+- DMHub Android SDK 1.1.3 要求  `Java >= 1.7`  &  `Android API >= 9` 。
 
 ## 2. 创建应用
 
@@ -55,7 +55,7 @@
 
 ### 3.1 添加 jar 包
 
-复制 libs 目录下的 [dmhubsdk-android-1.1.2.jar](libs/dmhubsdk-android-1.1.2.jar) 文件到工程主 module 的 libs 目录下，右键 jar 包，选择 `Add As Library...` ，将 jar 作为 Library 添加到主 module 中。
+复制 libs 目录下的 [dmhubsdk-android-1.1.3.jar](libs/dmhubsdk-android-1.1.3.jar) 文件到工程主 module 的 libs 目录下，右键 jar 包，选择 `Add As Library...` ，将 jar 作为 Library 添加到主 module 中。
 
 ### 3.2 配置 AndroidManifest.xml
 
