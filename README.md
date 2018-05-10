@@ -6,4 +6,4 @@ DMHub SDK 开发指南：
 
 - [DMHub iOS SDK 开发指南](dmhubsdk-ios/GUIDE.md)
 
-- [DMHub Android SDK 开发指南](dmhubsdk-android/GUIDE.md)
+- [DMHub Android SDK 开发指南](dmhubsdk-android-2.0.0/GUIDE.md)
